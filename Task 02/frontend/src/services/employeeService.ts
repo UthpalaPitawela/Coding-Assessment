@@ -20,4 +20,5 @@ export const deleteEmployee = async(employeeId: number ) => {
 
 export const updateEmployee = async(employee: IEmployee) => {
     const response = await axios.put("http://localhost:3000/dev/employee/edit", employee);
+    return response.data;
 }

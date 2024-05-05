@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 
 import "./EmployeeRowComponent.styles.scss";
-import { EmployeeContextType, EmployeeRowType } from "../../types/employee.types";
+import {
+  EmployeeContextType,
+  EmployeeRowType,
+} from "../../types/employee.types";
 import { EmployeeContext } from "../../context/employeeContext";
 import { deleteEmployee, updateEmployee } from "../../services/employeeService";
 
@@ -9,28 +12,39 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
   employeeData,
 }) => {
   const [editing, setEditing] = useState(false);
+  const [editLoader, setEditLoader] = useState(false);
+  const [deleteLoader, setDeleteLoader] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState(employeeData);
-  const { employees, setEmployees } = useContext(EmployeeContext) as EmployeeContextType;
+  const { employees, setEmployees } = useContext(
+    EmployeeContext
+  ) as EmployeeContextType;
 
   const removeEmployee = async (id: number) => {
+    setDeleteLoader(true);
     const result = await deleteEmployee(id);
-    console.log('result', result);
-    const newEmployeeArray = employees.filter((employee) => employee.employeeId !== id );
-    setEmployees(newEmployeeArray);
+    if (result && result.status === 200) {
+      setDeleteLoader(true);
+      const newEmployeeArray = employees.filter(
+        (employee) => employee.employeeId !== id
+      );
+      setDeleteLoader(false);
+      setEmployees(newEmployeeArray);
+    }
   };
   const saveEdit = async () => {
-    console.log('editedEmployee', editedEmployee);
+    setEditLoader(true);
     const result = await updateEmployee(editedEmployee);
-    employees.map((employee) => {
+    if (result && result.status === 200) {
+      employees.map((employee) => {
         if (employee.employeeId === employeeData.employeeId) {
-            return {...employee, editedEmployee}
+          return { ...employee, editedEmployee };
         }
-        console.log('employee', employee)
         return employee;
-    })
-    console.log('employees AFTER UPDATE', employees);
-    setEmployees(employees);
-    setEditing(false);
+      });
+      setEditLoader(false);
+      setEmployees(employees);
+      setEditing(false);
+    }
   };
 
   return (
@@ -41,7 +55,10 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
             type="text"
             value={editedEmployee.employeeId}
             onChange={(e) =>
-              setEditedEmployee({ ...editedEmployee, employeeId: parseInt(e.target.value) })
+              setEditedEmployee({
+                ...editedEmployee,
+                employeeId: parseInt(e.target.value),
+              })
             }
           />
         ) : (
@@ -115,9 +132,20 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
             >
               Cancel
             </button>
-            <button className="btn btn-success" onClick={saveEdit}>
-              Save
-            </button>
+            {editLoader ? (
+              <button className="btn btn-success" type="button" disabled>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Saving...
+              </button>
+            ) : (
+              <button className="btn btn-success" onClick={saveEdit}>
+                Save
+              </button>
+            )}
           </>
         ) : (
           <button className="btn btn-warning" onClick={() => setEditing(true)}>
@@ -126,9 +154,23 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
         )}
       </td>
       <td>
-        <button className="btn btn-danger" onClick={() => removeEmployee(employeeData.employeeId)}>
-          Delete
-        </button>
+        {deleteLoader ? (
+          <button className="btn btn-danger" type="button" disabled>
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Deleting...
+          </button>
+        ) : (
+          <button
+            className="btn btn-danger"
+            onClick={() => removeEmployee(employeeData.employeeId)}
+          >
+            Delete
+          </button>
+        )}
       </td>
     </tr>
   );

@@ -6,14 +6,6 @@ import { EmployeeContext } from "../../context/employeeContext";
 
 export const EmployeeListComponent = () => {
   const { employees } = useContext(EmployeeContext) as EmployeeContextType;
-
-    // const employees = [
-    //     {employeeId: 1, name: "Kamal Perera", designation: "Software Engineer", age: 25, location: "Colombo"},
-    //     {employeeId: 2,name: "Sahani Fernando", designation: "Senior Software Engineer", age: 29, location: "Colombo"},
-    //     {employeeId: 3, name: "Nadun Peiris", designation: "Technical Lead", age: 25, location: "Kandy"},
-    //     {employeeId: 4, name: "Amali Perera", designation: "Software Engineer",age: 30, location: "Gampaha"},
-    //     {employeeId: 5,name: "Nayani Guruge", designation: "Senior Software Engineer",  age: 28, location: "Galle"}
-    // ];
   return (
     <table className="table table-bordered employee-table">
       <thead>

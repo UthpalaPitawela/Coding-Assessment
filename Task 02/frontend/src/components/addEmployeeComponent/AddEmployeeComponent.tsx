@@ -7,9 +7,9 @@ import { addEmployee } from "../../services/employeeService";
 import { EmployeePage } from "../../pages/EmployeePage";
 
 export const AddEmployeeComponent = () => {
+  const [loadEmployeeList, setLoadEmployeeList] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [loadEmployeeList, setLoadEmployeeList] = useState(false);
   const [alert, setAlert] = useState("");
 
   const { employees, setEmployees } = useContext(

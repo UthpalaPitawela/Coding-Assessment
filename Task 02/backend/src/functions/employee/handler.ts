@@ -56,7 +56,7 @@ import { validateEmployeeId, validateEmployeeParams } from "src/validations/empl
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: "Employee is successfully updated",result }),
+          body: JSON.stringify({ message: "Employee is successfully updated",result, status: 200 }),
         };
         return response;
       } catch (e) {
@@ -105,7 +105,7 @@ import { validateEmployeeId, validateEmployeeParams } from "src/validations/empl
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: "Employee is successfully deleted",result }),
+          body: JSON.stringify({ message: "Employee is successfully deleted",result, status: 200 }),
         };
         return response;
       } catch (e) {
