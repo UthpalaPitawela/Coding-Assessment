@@ -11,12 +11,9 @@ import { validateEmployeeId, validateEmployeeParams } from "src/validations/empl
 
   export const addEmployee = middyfy(
     async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-      console.log('event', event);
       try {
         const employeeParams: EmployeeType = JSON.parse(JSON.stringify(event.body))
-        console.log('employeeParams', employeeParams);
         const { error } = validateEmployeeParams(employeeParams);
-        console.log('error', error);
         if (error) {
           return {
             statusCode: 400,
@@ -24,13 +21,12 @@ import { validateEmployeeId, validateEmployeeParams } from "src/validations/empl
           };
         }
         const result = await employeeService.addEmployee(employeeParams);
-        console.log('result', result)
         const response = {
           statusCode: 200,
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ message: "New employee added successfully",result }),
+          body: JSON.stringify({ message: "New employee added successfully", status: 200,result }),
         };
         return response;
       } catch (e) {
