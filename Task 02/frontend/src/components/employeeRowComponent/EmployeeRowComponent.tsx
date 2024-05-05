@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import "./EmployeeRowComponent.styles.scss";
 import { EmployeeContextType, EmployeeRowType } from "../../types/employee.types";
 import { EmployeeContext } from "../../context/employeeContext";
-import { updateEmployee } from "../../services/employeeService";
+import { deleteEmployee, updateEmployee } from "../../services/employeeService";
 
 export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
   employeeData,
@@ -12,18 +12,20 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
   const [editedEmployee, setEditedEmployee] = useState(employeeData);
   const { employees, setEmployees } = useContext(EmployeeContext) as EmployeeContextType;
 
-  const deleteEmployee = async (id: number) => {
+  const removeEmployee = async (id: number) => {
     const result = await deleteEmployee(id);
     console.log('result', result);
     const newEmployeeArray = employees.filter((employee) => employee.employeeId !== id );
     setEmployees(newEmployeeArray);
   };
   const saveEdit = async () => {
+    console.log('editedEmployee', editedEmployee);
     const result = await updateEmployee(editedEmployee);
     employees.map((employee) => {
         if (employee.employeeId === employeeData.employeeId) {
             return {...employee, editedEmployee}
         }
+        console.log('employee', employee)
         return employee;
     })
     console.log('employees AFTER UPDATE', employees);
@@ -124,7 +126,7 @@ export const EmployeeRowComponent: React.FC<EmployeeRowType> = ({
         )}
       </td>
       <td>
-        <button className="btn btn-danger" onClick={() => deleteEmployee(employeeData.employeeId)}>
+        <button className="btn btn-danger" onClick={() => removeEmployee(employeeData.employeeId)}>
           Delete
         </button>
       </td>

@@ -14,9 +14,10 @@ export const EmployeePage = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await getAllEmployees();
-            if (response && response.data.length>0) {
-              setEmployees(response.data)
+            const response: any = await getAllEmployees();
+            console.log('response', response);
+            if (response && response.result.length>0) {
+              setEmployees(response.result)
             }
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -37,7 +38,7 @@ export const EmployeePage = () => {
             <h2>Employees</h2>
        <SearchBarComponent />
       <button className="btn btn-primary" onClick={()=>setViewAddEmployeeForm(true)}>Add Employee</button>
-      <EmployeeListComponent />
+      <EmployeeListComponent/>
       </>)}
      
     </>
