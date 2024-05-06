@@ -181,7 +181,7 @@ export const AddEmployeeComponent = () => {
                       role="status"
                       aria-hidden="true"
                     ></span>
-                    Loading...
+                    Saving...
                   </button>
                 ) : (
                   <button className="btn btn-primary">Save</button>
